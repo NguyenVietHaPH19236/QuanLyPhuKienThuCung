@@ -1,36 +1,59 @@
-﻿
+﻿@model List<GioHang>
+
 <br>
 <div class="container">
-    <h1>GIỎ HÀNG</h1> <br >
+    <h1>GIỎ HÀNG</h1> <br>
     <table class="table table-bordered">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Sản phẩm</th>
-      <th scope="col">Gia tiền</th>
-      <th scope="col">Số lượng</th>
-      <th scope="col">Thành tiền</th>
-      <th scope="col">Active</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row"></th>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td>
-        <button type="button" class="btn btn-danger"> Sửa </button>         
-        <button type="button" class="btn btn-danger"> Xoá </button> 
-      </td> 
-    </tr>
-  </tbody>
-</table>
-<div class="total payment">
-    <span>Tổng tiền:</span> <br>
-</div>
-<div class="modal-footer">
-<button type="button" class="btn btn-primary">Thanh Toán</button>
-</div>
+        <thead>
+            <tr>
+                <th>Sản phẩm</th>
+                <th>Giá tiền</th>
+                <th>Số lượng</th>
+                <th>Thành tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr data-id="@item.Id">
+                    <td>@item.sanPhamChiTiet.TenSP</td>
+                    <td id="gia">@item.sanPhamChiTiet.GianBan</td>
+                    <td>
+                        <input style="width:45px" type="number" value="@item.SoLuong" onchange="myFunction(@item.Id)" class="soluong">
+                    </td>
+                    <td class="thanhtien">@(item.sanPhamChiTiet.GianBan*item.SoLuong)</td>
+                    <td style="text-align:center">
+                        <a class="btn btn-danger" asp-action="DeleteCart" asp-route-id="@item.Id">Xoá</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="total payment">
+        <span style="font-size:18px; font-weight:500;" id="tongtien">Tổng tiền : </span> <br>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Thanh Toán</button>
+    </div>
+    <a asp-controller="Home" asp-action="Index"><i class="fas fa-angle-left me-2"></i> Back to shopping</a>
+    <script>
+        function myFunction(id) {
+            var row=document.querySelector("tr[data-id='" + id + "']")
+            var gia=row.querySelector("td:nth-child(2)").innerHTML
+            var soluong=row.querySelector("td:nth-child(3)");
+            var sl = soluong.querySelector("input:nth-child(1)");
+
+            if(sl.value<0){
+                sl.value=0;
+            }
+            row.querySelector("td:nth-child(4)").innerHTML=gia*sl.value;
+            var thanhtiens = document.getElementsByClassName("thanhtien");
+            var tien=0;
+            for(let i=0;i<thanhtiens.length;i++){
+                tien+=parseInt(thanhtiens[i].innerHTML)
+            }
+            document.getElementById("tongtien").innerHTML="Tổng tiền : "+tien;
+            console.log(tien)
+            }
+    </script>
 </div>
