@@ -1,8 +1,11 @@
 ﻿using DAL.IServices;
 using DAL.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CSharp5.Controllers
@@ -22,21 +25,15 @@ namespace CSharp5.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GioHang>>> GetgioHangs()
         {
-            return await _service.GetAllAsync();
+            var query = _service.GetFirstOrDefault(include: x => x.Include(a => a.sanPhamChiTiet));
+            return await _service.GetAll2Async(query);
         }
 
         // GET: api/GioHangs/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<GioHang>> GetGioHang(int id)
+        [HttpGet("getDelete")]
+        public async Task<ActionResult<IEnumerable<GioHang>>> GetGioHang()
         {
-            var gioHang = await _service.GetOneAsync(id);
-
-            if (gioHang == null)
-            {
-                return NotFound();
-            }
-
-            return gioHang;
+            return await _service.GetAllAsync();
         }
 
         // PUT: api/GioHangs/5
@@ -92,7 +89,12 @@ namespace CSharp5.Controllers
 
             return NoContent();
         }
-
+        [HttpPost("clear")]
+        public async Task<IActionResult> DeleteGioHangs(List<GioHang> gioHangs)
+        {
+            await _service.RemoveRangeAsync(gioHangs);
+            return NoContent();
+        }
         private bool GioHangExists(int id)
         {
             return _service.EntityExists(id);

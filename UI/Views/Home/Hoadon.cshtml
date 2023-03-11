@@ -1,0 +1,78 @@
+﻿@model IEnumerable<HoaDon>
+<br />
+<section>
+    <nav>
+        <div class="container">
+            <div class="card">
+                <div class="card-header bg-black"></div>
+                <div class="card-body">
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <i class="far fa-building text-danger fa-6x float-start"></i>
+                            </div>
+                        </div>
+                        @foreach(var item in Model){
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <ul class="list-unstyled float-end">
+                                    <li style="font-size: 30px; color: red;">Fpoly PET</li> <br />
+                                    <li>Địa chỉ : @item.diaChi.diachi</li>
+                                    <li>Khách hàng : @item.diaChi.nguoiDung.Ten</li>
+                                    <li>Thu ngân : Admin</li>
+                                    <li>Ngày mua hàng : @item.NgayThanhToan</li>
+                                    <li>Ghi chú : @item.GhiChu</li> 
+                                </ul>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="">
+                            <h3 class="abc" style="font-size: 40px; text-align:center">Hóa đơn thanh toán</h3>
+                        </div>
+
+                        <div class="row mx-3">
+                            <table class="table" style="border: 1px solid #C7E8CA">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Tên sản phẩm</th>
+                                        <th scope="col" >Số lượng</th>
+                                        <th scope="col">Đơn giá</th>
+                                        <th scope="col">Thành tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item1 in item.hoaDonChiTiets)
+                                    {
+                                     <tr>
+                                        <td>@item1.sanPhamChiTiet.TenSP</td>
+                                        <td>@item1.SoLuong</td>
+                                        <td><i class="fas fa-dollar-sign"></i> @item1.Price</td>
+                                        <td><i class="fas fa-dollar-sign"></i> @(item1.SoLuong*item1.Price)</td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <hr>
+                        <div class="row">
+                            <div class="col-xl-8" style="margin-left:30px">
+                                <p class="float-end"
+                                   style="font-size: 30px; color: red; font-weight: 300;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+                                    Tổng tiền phải trả :  <span style="color:red">@item.hoaDonChiTiets.Select(a=>a.Price*a.SoLuong).Sum()</span>
+                                </p>
+                            </div>
+                        </div>
+                        }
+                        <div class="">
+                            <p style="text-align:center">Xin cảm ơn và hẹn gặp lại !</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-black"></div>
+            </div>
+        </div>
+    </nav>
+</section>
