@@ -1,4 +1,5 @@
 ﻿using DAL.Base;
+using System;
 
 namespace DAL.Models
 {
@@ -10,5 +11,6 @@ namespace DAL.Models
         public SanPhamChiTiet sanPhamChiTiet { get; set; }
         public int Id_nguoidung { get; set; }
         public NguoiDung nguoiDung { get; set; }
+        public Guid IdGioHang { get; set; }
     }
 }
